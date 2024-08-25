@@ -3,7 +3,6 @@ from utils.files import read_file
 from services.database import get_db_structure
 import re
 import unidecode
-import string
 import streamlit as st
 
 # Configurações da API
