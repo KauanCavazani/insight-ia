@@ -1,6 +1,6 @@
 from sqlalchemy import create_engine
 from sqlalchemy import inspect
-from config.env import DB_NAME, DB_HOST, DB_PASSWORD, DB_USER
+from config.env import DB_NAME, DB_HOST, DB_PASSWORD, DB_USER, DB_PORT
 import pandas as pd
 import streamlit as st
 
@@ -12,7 +12,7 @@ def get_sqlalchemy_engine():
         sqlalchemy.engine.Engine: Objeto de engine SQLAlchemy.
     """
     try:
-        engine = create_engine(f"mysql+mysqlconnector://{DB_USER}:{DB_PASSWORD}@{DB_HOST}/{DB_NAME}")
+        engine = create_engine(f"mysql+mysqlconnector://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}")
         return engine
     except Exception as e:
         print(f"Erro ao criar engine SQLAlchemy: {e}")
@@ -30,15 +30,15 @@ def execute_query(query: str) -> pd.DataFrame:
     """
     engine = get_sqlalchemy_engine()
     if engine is None:
-        return pd.DataFrame()
+        return None
 
     try:
         df = pd.read_sql(query, engine)
 
         return df
     except Exception as e:
-        print(f"Erro ao executar a query: {e}")
-        return pd.DataFrame()
+        st.error(f"Erro ao executar a query: {e}")
+        return None
     finally:
         engine.dispose()
 
@@ -52,13 +52,17 @@ def get_db_structure() -> str:
     engine = get_sqlalchemy_engine()
     if engine is None:
         st.error("Erro ao conectar ao banco de dados.")
-        return pd.DataFrame()
+        return None
 
     try:
         inspector = inspect(engine)
         tables = inspector.get_table_names()
 
         db_structure = f"Estrutura do Banco de Dados '{DB_NAME}':\n\n"
+
+        if len(tables) == 0:
+            st.error("Nenhuma tabela encontrada.")
+            return None
 
         for table_name in tables:
             db_structure += f"Tabela: {table_name}\n"
@@ -72,8 +76,8 @@ def get_db_structure() -> str:
         return db_structure
 
     except Exception as e:
-        print(f"Erro ao obter a estrutura do banco de dados: {e}")
-        return "Erro ao obter a estrutura do banco de dados."
+        st.error(f"Erro ao obter a estrutura do banco de dados")
+        return None
 
     finally:
         engine.dispose()

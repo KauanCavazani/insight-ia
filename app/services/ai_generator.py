@@ -22,6 +22,10 @@ def generate_query(user_input: str) -> str:
         isCorrect = False
         prompt_template = read_file("app/prompts/prompt_template.txt")
         db_structure = get_db_structure()
+
+        if not db_structure:
+            return None, None
+        
         prompt = prompt_template.format(
             instruction=user_input,
             db_structure=db_structure

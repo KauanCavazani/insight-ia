@@ -70,6 +70,7 @@ python setup.py
 
 - Iniciar projeto:
 ```bash
+source venv/Scripts/activate
 streamlit run app/main.py
 ```
 
@@ -84,6 +85,8 @@ Para rodar esse projeto, você vai precisar adicionar as seguintes variáveis de
 `DB_PASSWORD`
 
 `DB_NAME`
+
+`DB_PORT`
 
 
 ## Autores
