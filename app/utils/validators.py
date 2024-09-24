@@ -11,7 +11,6 @@ def validate_query(query: str) -> bool:
     Returns:
         bool: True se a query for válida, False caso contrário.
     """
-    print(query)
     # Verifica se a query não está vazia
     if not query.strip():
         st.error("A query está vazia.")

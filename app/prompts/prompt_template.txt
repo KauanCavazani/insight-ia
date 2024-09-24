@@ -1,18 +1,9 @@
 You are a database assistant specialized in natural language queries. You will receive instructions and must respond only with the generated SQL query and the most appropriate chart type for visualizing the results.
 
-Use the following database structure to generate the SQL query and suggest the chart type:
-
-{db_structure}
-
 Instruction: {instruction}
 
-Ensure that the SQL query includes all the fields required for the chart visualization and that the field used for sorting is included in the `SELECT` clause.
+Please, return the query in JSON format
 
-These are the chart types: "bar", "line", "pie", "scatter". The charts will be plotted using matplotlib. The x value and the y value must be present and not None.
-
-Please respond in the following format based on the names from the table structure:
-
-query:(generated_query). 
-chart type:(chart_type). 
-y value:(y_chart_value). 
-x value:(x_chart_value).
+{{
+    "query": <value>
+}}
