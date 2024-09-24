@@ -7,3 +7,6 @@ mysql-connector-python
 matplotlib
 seaborn
 unidecode
+langchain
+langchain_community
+chromadb
